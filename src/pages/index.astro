@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import CardDraw from '../components/CardDraw.astro';
 import RelatedLinks from '../components/RelatedLinks.astro';
 import { getPageBySlug, getRelatedPages, sitePages } from '../data/pages';
 
@@ -16,18 +17,32 @@ const relatedPages = getRelatedPages(page);
 ---
 
 <BaseLayout title={page.title} description={page.description} canonicalPath="/">
-  <section class="home-shell">
-    <div class="home-hero">
-      <p class="eyebrow">{page.eyebrow}</p>
-      <h1>{page.heading}</h1>
-      <p class="lede">{page.intro}</p>
-      <div class="hero-actions">
-        <a class="button" href="/love-tarot-reading/">Start a free love reading</a>
-        <a class="button secondary" href="/relationship-anxiety-or-gut-feeling/">Explore emotional patterns</a>
+  <section class="ritual-hero">
+    <div class="home-shell ritual-hero-grid">
+      <div class="home-hero">
+        <p class="eyebrow">Private relationship reading</p>
+        <h1>Choose a card for the question you keep asking about them.</h1>
+        <p class="lede">
+          Mirror Tarot turns love uncertainty into a two-part reading: what the connection may be
+          showing, and what the question reveals inside you.
+        </p>
+        <div class="hero-actions">
+          <a class="button" href="/love-tarot-reading/">Start the reading</a>
+          <a class="button secondary" href="/does-he-miss-me-tarot/">Choose a relationship question</a>
+        </div>
       </div>
+
+      <CardDraw category="general" compact />
+    </div>
+  </section>
+
+  <section class="home-shell section-band">
+    <div class="section-heading">
+      <p class="eyebrow">Start with the ache</p>
+      <h2>Questions people ask when uncertainty gets loud.</h2>
     </div>
 
-    <section class="feature-grid" aria-label="Featured relationship questions">
+    <section class="feature-grid question-grid" aria-label="Featured relationship questions">
       {featuredPages.map((item) => (
         <a class="feature-card" href={item.slug}>
           <span>{item.eyebrow}</span>

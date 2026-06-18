@@ -37,6 +37,10 @@
 - `@astrojs/sitemap` 已生成 `dist/sitemap-index.xml` 和 `dist/sitemap-0.xml`。
 - Playwright CLI 已打开 `http://127.0.0.1:4321/love-tarot-reading/`，点击卡牌后结果区域正常显示。
 - 浏览器验证截图已保存到 `output/playwright/love-reading-card-draw.png`。
+- 视觉/UX 改版后，首页桌面截图已保存到 `output/playwright/redesign-home-desktop.png`。
+- 视觉/UX 改版后，Love Reading 桌面截图已保存到 `output/playwright/redesign-love-desktop.png`。
+- 视觉/UX 改版后，Love Reading 移动端截图已保存到 `output/playwright/redesign-love-mobile.png`。
+- 移动端宽度 390px 验证无横向溢出，`scrollWidth` 等于 `clientWidth`。
 
 ## 未验证内容
 

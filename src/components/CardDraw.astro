@@ -4,14 +4,15 @@ import ReadingResult from './ReadingResult.astro';
 
 type Props = {
   category?: CardCategory;
+  compact?: boolean;
 };
 
-const { category = 'general' } = Astro.props;
+const { category = 'general', compact = false } = Astro.props;
 const cards = getCardsForCategory(category).slice(0, 6);
 const fallbackCard = cards[0];
 ---
 
-<section class="card-draw" data-card-draw data-cards={JSON.stringify(cards)}>
+<section class:list={['card-draw', compact && 'is-compact']} data-card-draw data-cards={JSON.stringify(cards)}>
   <div class="card-draw-copy">
     <p class="eyebrow">Choose a card</p>
     <h2>Let the answer arrive in two parts.</h2>
@@ -24,7 +25,9 @@ const fallbackCard = cards[0];
   <div class="card-options" role="group" aria-label="Choose one card for your reading">
     {[0, 1, 2].map((index) => (
       <button class="tarot-card-back" type="button" data-card-index={index}>
-        <span>Mirror</span>
+        <span class="card-number">0{index + 1}</span>
+        <span class="card-sigil" aria-hidden="true"></span>
+        <span class="card-label">Mirror</span>
       </button>
     ))}
   </div>
