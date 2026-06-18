@@ -1,6 +1,16 @@
 ---
-import { getCardsForCategory, type CardCategory } from '../data/cards';
+import { getCardsForCategory, mirrorCards, type CardCategory } from '../data/cards';
 import ReadingResult from './ReadingResult.astro';
+
+type ReadingQuestion = {
+  id: string;
+  label: string;
+  category: CardCategory;
+  prompt: string;
+  windowFrame: string;
+  mirrorFrame: string;
+  actionFrame: string;
+};
 
 type Props = {
   category?: CardCategory;
@@ -10,16 +20,91 @@ type Props = {
 const { category = 'general', compact = false } = Astro.props;
 const cards = getCardsForCategory(category).slice(0, 6);
 const fallbackCard = cards[0];
+const questions: ReadingQuestion[] = [
+  {
+    id: 'feelings',
+    label: 'What do they feel about me?',
+    category: 'feelings',
+    prompt: 'Look at what their signals may be showing and what you hope their feelings will fix.',
+    windowFrame: 'For this question, the card points to the difference between feeling and capacity.',
+    mirrorFrame: 'It also asks what you hope their feelings would finally prove about you.',
+    actionFrame: 'Before you search for another sign, compare this reading with their consistent behavior.',
+  },
+  {
+    id: 'missing',
+    label: 'Do they miss me?',
+    category: 'missing',
+    prompt: 'Explore silence, longing, and the need to know whether the connection still matters.',
+    windowFrame: 'For this question, the card treats silence as information, not proof.',
+    mirrorFrame: 'It also asks why being missed would feel like relief right now.',
+    actionFrame: 'Let this answer support reflection, not another round of checking or chasing.',
+  },
+  {
+    id: 'texting',
+    label: 'Should I text them?',
+    category: 'texting',
+    prompt: 'Separate honest communication from the urge to chase reassurance.',
+    windowFrame: 'For this question, the card looks at whether contact would create clarity or restart the loop.',
+    mirrorFrame: 'It also asks whether the urge to text is expression, repair, or anxiety seeking relief.',
+    actionFrame: 'Write the message first, then decide whether it still feels clear after the intensity drops.',
+  },
+  {
+    id: 'waiting',
+    label: 'Should I wait or let go?',
+    category: 'waiting',
+    prompt: 'Notice whether waiting is hope, fear, loyalty, or avoidance.',
+    windowFrame: 'For this question, the card looks at whether there is movement you can actually see.',
+    mirrorFrame: 'It also asks what waiting protects you from feeling or choosing.',
+    actionFrame: 'Set one boundary around how long uncertainty is allowed to organize your day.',
+  },
+  {
+    id: 'anxiety',
+    label: 'Why can’t I stop thinking about them?',
+    category: 'anxiety',
+    prompt: 'Read the emotional loop underneath the repeating thought.',
+    windowFrame: 'For this question, the card does not treat repetition as destiny.',
+    mirrorFrame: 'It also asks what feeling the thought keeps returning to solve.',
+    actionFrame: 'Name the feeling under the thought before treating the thought as a sign.',
+  },
+];
+const initialQuestion = questions.find((question) => question.category === category) ?? questions[0];
 ---
 
-<section class:list={['card-draw', compact && 'is-compact']} data-card-draw data-cards={JSON.stringify(cards)}>
+<section
+  class:list={['card-draw', compact && 'is-compact']}
+  data-card-draw
+  data-cards={JSON.stringify(cards)}
+  data-all-cards={JSON.stringify(mirrorCards)}
+  data-questions={JSON.stringify(questions)}
+>
   <div class="card-draw-copy">
-    <p class="eyebrow">Choose a card</p>
-    <h2>Let the answer arrive in two parts.</h2>
+    <p class="eyebrow">Three-step reading</p>
+    <h2>Choose your question. Pick one card. Read the Window and the Mirror.</h2>
     <p>
-      The Window reflects the relationship question. The Mirror reflects what the question may be
-      stirring inside you.
+      The reading is clearer when the card responds to a real question, not a vague mood.
     </p>
+  </div>
+
+  <div class="reading-steps" aria-label="Reading steps">
+    <span>1. Choose your question</span>
+    <span>2. Pick one card</span>
+    <span>3. Read the Window and the Mirror</span>
+  </div>
+
+  <div class="question-selector" data-question-selector role="radiogroup" aria-label="Choose your relationship question">
+    {questions.map((question) => (
+      <button
+        class:list={['question-chip', question.id === initialQuestion.id && 'is-selected']}
+        type="button"
+        role="radio"
+        aria-checked={question.id === initialQuestion.id ? 'true' : 'false'}
+        data-question-id={question.id}
+        data-question-category={question.category}
+      >
+        <span>{question.label}</span>
+        <small>{question.prompt}</small>
+      </button>
+    ))}
   </div>
 
   <div class="card-options" role="group" aria-label="Choose one card for your reading">
@@ -33,32 +118,63 @@ const fallbackCard = cards[0];
   </div>
 
   <div class="reading-result-shell">
-    <ReadingResult card={fallbackCard} hidden />
+    <ReadingResult card={fallbackCard} questionLabel={initialQuestion.label} hidden />
   </div>
 
-  <script>
+  <script is:inline>
     document.querySelectorAll('[data-card-draw]').forEach((root) => {
       if (!(root instanceof HTMLElement)) return;
-      const cards = JSON.parse(root.dataset.cards || '[]');
+      const defaultCards = JSON.parse(root.dataset.cards || '[]');
+      const allCards = JSON.parse(root.dataset.allCards || '[]');
+      const questions = JSON.parse(root.dataset.questions || '[]');
       const buttons = Array.from(root.querySelectorAll('[data-card-index]'));
+      const questionButtons = Array.from(root.querySelectorAll('[data-question-id]'));
       const result = root.querySelector('[data-reading-result]');
+      let selectedQuestion = questions.find((question) => question.category === defaultCards[0]?.categories?.[0]) || questions[0];
 
-      const setText = (selector: string, value: string) => {
+      const setText = (selector, value) => {
         const element = result?.querySelector(selector);
         if (element) element.textContent = value;
       };
 
+      const cardsForQuestion = () => {
+        const filtered = allCards.filter((card) => card.categories?.includes(selectedQuestion.category));
+        return filtered.length > 0 ? filtered : defaultCards;
+      };
+
+      questionButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const questionId = button.getAttribute('data-question-id');
+          selectedQuestion = questions.find((question) => question.id === questionId) || questions[0];
+          questionButtons.forEach((item) => {
+            item.classList.remove('is-selected');
+            item.setAttribute('aria-checked', 'false');
+          });
+          button.classList.add('is-selected');
+          button.setAttribute('aria-checked', 'true');
+          buttons.forEach((item) => item.classList.remove('is-selected', 'is-dimmed', 'is-revealed'));
+          result?.classList.add('is-hidden');
+        });
+      });
+
       buttons.forEach((button, index) => {
         button.addEventListener('click', () => {
+          const cards = cardsForQuestion();
           const card = cards[(index + Math.floor(Math.random() * cards.length)) % cards.length];
-          buttons.forEach((item) => item.classList.remove('is-selected'));
-          button.classList.add('is-selected');
+          buttons.forEach((item) => {
+            item.classList.remove('is-selected', 'is-revealed');
+            item.classList.add('is-dimmed');
+          });
+          button.classList.remove('is-dimmed');
+          button.classList.add('is-selected', 'is-revealed');
+          setText('[data-selected-question]', selectedQuestion.label);
           setText('[data-card-name]', card.name);
           setText('[data-card-hook]', card.hook);
-          setText('[data-card-window]', card.window);
-          setText('[data-card-mirror]', card.mirror);
-          setText('[data-card-action]', card.action);
+          setText('[data-card-window]', `${selectedQuestion.windowFrame} ${card.window}`);
+          setText('[data-card-mirror]', `${selectedQuestion.mirrorFrame} ${card.mirror}`);
+          setText('[data-card-action]', `${selectedQuestion.actionFrame} ${card.action}`);
           result?.classList.remove('is-hidden');
+          result?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         });
       });
     });

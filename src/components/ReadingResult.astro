@@ -3,14 +3,16 @@ import type { MirrorCard } from '../data/cards';
 
 type Props = {
   card: MirrorCard;
+  questionLabel?: string;
   hidden?: boolean;
 };
 
-const { card, hidden = false } = Astro.props;
+const { card, questionLabel = 'General love reading', hidden = false } = Astro.props;
 ---
 
 <article class="reading-result" data-reading-result class:list={[hidden && 'is-hidden']} aria-live="polite">
-  <p class="eyebrow">Your card</p>
+  <p class="eyebrow">Your reading for</p>
+  <p class="selected-question" data-selected-question>{questionLabel}</p>
   <h3 data-card-name>{card.name}</h3>
   <p class="card-hook" data-card-hook>{card.hook}</p>
   <div class="reading-columns">

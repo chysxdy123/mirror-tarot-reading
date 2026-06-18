@@ -41,6 +41,10 @@
 - 视觉/UX 改版后，Love Reading 桌面截图已保存到 `output/playwright/redesign-love-desktop.png`。
 - 视觉/UX 改版后，Love Reading 移动端截图已保存到 `output/playwright/redesign-love-mobile.png`。
 - 移动端宽度 390px 验证无横向溢出，`scrollWidth` 等于 `clientWidth`。
+- Question-first reading flow 改版后，Love Reading 页面包含问题选择器、三步说明和结果问题标签。
+- Playwright 验证选择 `Should I text them?` 后抽卡，结果显示所选问题，并且 Window、Mirror、Gentle next step 都带有对应问题语境。
+- 移动端 390px 验证 question-first reading flow 无横向溢出，结果问题标签正确。
+- Question-first reading flow 截图已保存到 `output/playwright/question-first-reading-desktop.png` 和 `output/playwright/question-first-reading-mobile.png`。
 
 ## 未验证内容
 
