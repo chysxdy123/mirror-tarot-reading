@@ -1,0 +1,65 @@
+---
+import { getCardsForCategory, type CardCategory } from '../data/cards';
+import ReadingResult from './ReadingResult.astro';
+
+type Props = {
+  category?: CardCategory;
+};
+
+const { category = 'general' } = Astro.props;
+const cards = getCardsForCategory(category).slice(0, 6);
+const fallbackCard = cards[0];
+---
+
+<section class="card-draw" data-card-draw data-cards={JSON.stringify(cards)}>
+  <div class="card-draw-copy">
+    <p class="eyebrow">Choose a card</p>
+    <h2>Let the answer arrive in two parts.</h2>
+    <p>
+      The Window reflects the relationship question. The Mirror reflects what the question may be
+      stirring inside you.
+    </p>
+  </div>
+
+  <div class="card-options" role="group" aria-label="Choose one card for your reading">
+    {[0, 1, 2].map((index) => (
+      <button class="tarot-card-back" type="button" data-card-index={index}>
+        <span>Mirror</span>
+      </button>
+    ))}
+  </div>
+
+  <div class="reading-result-shell">
+    <ReadingResult card={fallbackCard} hidden />
+  </div>
+
+  <script>
+    const root = document.currentScript?.closest('[data-card-draw]');
+    if (root instanceof HTMLElement) {
+      const cards = JSON.parse(root.dataset.cards || '[]');
+      const buttons = Array.from(root.querySelectorAll('[data-card-index]'));
+      const result = root.querySelector('[data-reading-result]');
+
+      const setText = (selector: string, value: string) => {
+        const element = result?.querySelector(selector);
+        if (element) element.textContent = value;
+      };
+
+      buttons.forEach((button, index) => {
+        button.addEventListener('click', () => {
+          const card = cards[(index + Math.floor(Math.random() * cards.length)) % cards.length];
+          buttons.forEach((item) => item.classList.remove('is-selected'));
+          button.classList.add('is-selected');
+          setText('h3', card.name);
+          setText('.card-hook', card.hook);
+          const sections = result?.querySelectorAll('.reading-columns section p');
+          if (sections?.[0]) sections[0].textContent = card.window;
+          if (sections?.[1]) sections[1].textContent = card.mirror;
+          const action = result?.querySelector('section:last-child p');
+          if (action) action.textContent = card.action;
+          result?.classList.remove('is-hidden');
+        });
+      });
+    }
+  </script>
+</section>

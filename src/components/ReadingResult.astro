@@ -1,0 +1,30 @@
+---
+import type { MirrorCard } from '../data/cards';
+
+type Props = {
+  card: MirrorCard;
+  hidden?: boolean;
+};
+
+const { card, hidden = false } = Astro.props;
+---
+
+<article class="reading-result" data-reading-result class:list={[hidden && 'is-hidden']} aria-live="polite">
+  <p class="eyebrow">Your card</p>
+  <h3>{card.name}</h3>
+  <p class="card-hook">{card.hook}</p>
+  <div class="reading-columns">
+    <section>
+      <h4>The Window</h4>
+      <p>{card.window}</p>
+    </section>
+    <section>
+      <h4>The Mirror</h4>
+      <p>{card.mirror}</p>
+    </section>
+  </div>
+  <section>
+    <h4>Gentle next step</h4>
+    <p>{card.action}</p>
+  </section>
+</article>

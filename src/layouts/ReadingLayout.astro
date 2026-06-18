@@ -1,5 +1,6 @@
 ---
 import ArticleLayout from './ArticleLayout.astro';
+import CardDraw from '../components/CardDraw.astro';
 import type { SitePage } from '../data/pages';
 
 type Props = {
@@ -11,5 +12,6 @@ const { page } = Astro.props;
 
 <ArticleLayout page={page}>
   <slot name="before-sections" slot="before-sections" />
+  <CardDraw slot="after-sections" category={page.category} />
   <slot />
 </ArticleLayout>

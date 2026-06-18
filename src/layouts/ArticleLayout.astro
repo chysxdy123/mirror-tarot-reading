@@ -27,6 +27,7 @@ const relatedPages = getRelatedPages(page);
           <p>{section.body}</p>
         </section>
       ))}
+      <slot name="after-sections" />
       <slot />
       {
         page.faqs && page.faqs.length > 0 && (
