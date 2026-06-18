@@ -1,0 +1,9 @@
+---
+import ArticleLayout from '../layouts/ArticleLayout.astro';
+import { getPageBySlug } from '../data/pages';
+
+const page = getPageBySlug('/contact/');
+if (!page) throw new Error('Contact page data is missing');
+---
+
+<ArticleLayout page={page} />

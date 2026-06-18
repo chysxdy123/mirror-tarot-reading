@@ -1,0 +1,19 @@
+---
+import ArticleLayout from '../layouts/ArticleLayout.astro';
+import ReadingLayout from '../layouts/ReadingLayout.astro';
+import { contentPages } from '../data/pages';
+
+export function getStaticPaths() {
+  return contentPages
+    .filter((page) => !['/love-tarot-reading/', '/cards/', '/about/', '/contact/', '/privacy-policy/', '/disclaimer/'].includes(page.slug))
+    .map((page) => ({
+      params: { slug: page.slug.replaceAll('/', '') },
+      props: { page },
+    }));
+}
+
+const { page } = Astro.props;
+const Layout = page.type === 'question' ? ReadingLayout : ArticleLayout;
+---
+
+<Layout page={page} />

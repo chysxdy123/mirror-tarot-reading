@@ -1,0 +1,9 @@
+---
+import ArticleLayout from '../layouts/ArticleLayout.astro';
+import { getPageBySlug } from '../data/pages';
+
+const page = getPageBySlug('/privacy-policy/');
+if (!page) throw new Error('Privacy policy page data is missing');
+---
+
+<ArticleLayout page={page} />

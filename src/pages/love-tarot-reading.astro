@@ -1,0 +1,20 @@
+---
+import ReadingLayout from '../layouts/ReadingLayout.astro';
+import { getPageBySlug } from '../data/pages';
+
+const page = getPageBySlug('/love-tarot-reading/');
+
+if (!page) {
+  throw new Error('Love tarot reading page data is missing');
+}
+---
+
+<ReadingLayout page={page}>
+  <section class="notice-panel" slot="before-sections">
+    <h2>Before you draw</h2>
+    <p>
+      Think of one relationship question. The reading is for entertainment and self-reflection,
+      not certainty about another person or a guaranteed future.
+    </p>
+  </section>
+</ReadingLayout>

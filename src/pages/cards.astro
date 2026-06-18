@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { mirrorCards } from '../data/cards';
+import { getPageBySlug } from '../data/pages';
+
+const page = getPageBySlug('/cards/');
+
+if (!page) {
+  throw new Error('Cards page data is missing');
+}
+---
+
+<BaseLayout title={page.title} description={page.description} canonicalPath={page.slug}>
+  <article class="article-shell">
+    <header class="article-hero">
+      <p class="eyebrow">{page.eyebrow}</p>
+      <h1>{page.heading}</h1>
+      <p class="lede">{page.intro}</p>
+    </header>
+
+    <section class="feature-grid" aria-label="Mirror Tarot card index">
+      {mirrorCards.map((card) => (
+        <article class="feature-card">
+          <span>{card.name}</span>
+          <strong>{card.hook}</strong>
+          <p>{card.mirror}</p>
+        </article>
+      ))}
+    </section>
+  </article>
+</BaseLayout>

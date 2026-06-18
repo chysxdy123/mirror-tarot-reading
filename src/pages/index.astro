@@ -1,21 +1,50 @@
 ---
-const title = 'Mirror Tarot Reading';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import RelatedLinks from '../components/RelatedLinks.astro';
+import { getPageBySlug, getRelatedPages, sitePages } from '../data/pages';
+
+const page = getPageBySlug('/');
+
+if (!page) {
+  throw new Error('Home page data is missing');
+}
+
+const featuredPages = sitePages.filter((item) =>
+  ['/does-he-miss-me-tarot/', '/should-i-text-him/', '/what-do-they-feel-about-me/', '/relationship-anxiety-or-gut-feeling/'].includes(item.slug),
+);
+const relatedPages = getRelatedPages(page);
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
-    <meta
-      name="description"
-      content="A reflective love card reading site for relationship uncertainty."
-    />
-  </head>
-  <body>
-    <main>
-      <h1>{title}</h1>
-      <p>Ask about them. Discover what the question reveals about you.</p>
-    </main>
-  </body>
-</html>
+<BaseLayout title={page.title} description={page.description} canonicalPath="/">
+  <section class="home-shell">
+    <div class="home-hero">
+      <p class="eyebrow">{page.eyebrow}</p>
+      <h1>{page.heading}</h1>
+      <p class="lede">{page.intro}</p>
+      <div class="hero-actions">
+        <a class="button" href="/love-tarot-reading/">Start a free love reading</a>
+        <a class="button secondary" href="/relationship-anxiety-or-gut-feeling/">Explore emotional patterns</a>
+      </div>
+    </div>
+
+    <section class="feature-grid" aria-label="Featured relationship questions">
+      {featuredPages.map((item) => (
+        <a class="feature-card" href={item.slug}>
+          <span>{item.eyebrow}</span>
+          <strong>{item.heading}</strong>
+          <p>{item.description}</p>
+        </a>
+      ))}
+    </section>
+
+    <section class="method-panel">
+      <h2>The Window and the Mirror</h2>
+      <p>
+        The Window looks toward the relationship question you arrived with. The Mirror looks at
+        what that question may be asking from inside you.
+      </p>
+    </section>
+  </section>
+
+  <RelatedLinks pages={relatedPages} heading="Start here" />
+</BaseLayout>

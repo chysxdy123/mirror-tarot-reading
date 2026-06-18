@@ -1,0 +1,9 @@
+---
+import ArticleLayout from '../layouts/ArticleLayout.astro';
+import { getPageBySlug } from '../data/pages';
+
+const page = getPageBySlug('/about/');
+if (!page) throw new Error('About page data is missing');
+---
+
+<ArticleLayout page={page} />
