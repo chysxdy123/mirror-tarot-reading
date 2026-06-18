@@ -34,8 +34,8 @@ const fallbackCard = cards[0];
   </div>
 
   <script>
-    const root = document.currentScript?.closest('[data-card-draw]');
-    if (root instanceof HTMLElement) {
+    document.querySelectorAll('[data-card-draw]').forEach((root) => {
+      if (!(root instanceof HTMLElement)) return;
       const cards = JSON.parse(root.dataset.cards || '[]');
       const buttons = Array.from(root.querySelectorAll('[data-card-index]'));
       const result = root.querySelector('[data-reading-result]');
@@ -50,16 +50,14 @@ const fallbackCard = cards[0];
           const card = cards[(index + Math.floor(Math.random() * cards.length)) % cards.length];
           buttons.forEach((item) => item.classList.remove('is-selected'));
           button.classList.add('is-selected');
-          setText('h3', card.name);
-          setText('.card-hook', card.hook);
-          const sections = result?.querySelectorAll('.reading-columns section p');
-          if (sections?.[0]) sections[0].textContent = card.window;
-          if (sections?.[1]) sections[1].textContent = card.mirror;
-          const action = result?.querySelector('section:last-child p');
-          if (action) action.textContent = card.action;
+          setText('[data-card-name]', card.name);
+          setText('[data-card-hook]', card.hook);
+          setText('[data-card-window]', card.window);
+          setText('[data-card-mirror]', card.mirror);
+          setText('[data-card-action]', card.action);
           result?.classList.remove('is-hidden');
         });
       });
-    }
+    });
   </script>
 </section>

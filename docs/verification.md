@@ -29,14 +29,23 @@
 - 页面结构与用户路径文档已补充。
 - 内容计划与关键词地图已补充。
 - 技术方案已补充，并记录 Astro 静态站决策。
+- Astro MVP 已创建。
+- `npm run check` 通过，结果为 0 errors、0 warnings、0 hints。
+- `npm run test:data` 通过，2 个数据完整性测试通过。
+- `npm run test:html` 通过，构建后的 love reading 页面包含抽牌控件和结果区域。
+- `npm run build` 通过，生成 27 个静态页面。
+- `@astrojs/sitemap` 已生成 `dist/sitemap-index.xml` 和 `dist/sitemap-0.xml`。
+- Playwright CLI 已打开 `http://127.0.0.1:4321/love-tarot-reading/`，点击卡牌后结果区域正常显示。
+- 浏览器验证截图已保存到 `output/playwright/love-reading-card-draw.png`。
 
 ## 未验证内容
 
 还没有验证的部分：
 
 - 尚未验证关键词精确搜索量。
-- 尚未创建 Astro 网站代码。
 - 尚未设计页面视觉稿。
-- 尚未实现或部署网站。
+- 尚未部署网站。
 - 尚未配置域名 DNS。
 - 尚未申请或接入 AdSense。
+- 尚未接入 Google Search Console 或 Analytics。
+- npm audit 当前报告 7 个低/中风险依赖项；未执行 `npm audit fix --force`，避免破坏性升级。

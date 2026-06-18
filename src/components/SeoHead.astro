@@ -9,7 +9,9 @@ type Props = {
 };
 
 const { title, description, canonical = site.url, type = 'website' } = Astro.props;
-const pageTitle = title.includes(site.name) ? title : `${title} | ${site.name}`;
+const pageTitle = title.includes(site.name) || title.includes('Mirror Tarot')
+  ? title
+  : `${title} | ${site.name}`;
 ---
 
 <meta charset="utf-8" />

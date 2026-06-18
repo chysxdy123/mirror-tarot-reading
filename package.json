@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "@astrojs/check": "latest",
+    "@astrojs/sitemap": "^3.7.3",
     "astro": "latest",
     "typescript": "latest"
-  },
-  "devDependencies": {}
+  }
 }
