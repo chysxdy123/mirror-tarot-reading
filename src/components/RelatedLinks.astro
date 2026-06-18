@@ -1,0 +1,27 @@
+---
+import type { SitePage } from '../data/pages';
+
+type Props = {
+  pages: SitePage[];
+  heading?: string;
+};
+
+const { pages, heading = 'Related readings' } = Astro.props;
+---
+
+{
+  pages.length > 0 && (
+    <section class="related-panel" aria-labelledby="related-heading">
+      <h2 id="related-heading">{heading}</h2>
+      <div class="related-grid">
+        {pages.map((page) => (
+          <a class="related-card" href={page.slug}>
+            <span>{page.eyebrow}</span>
+            <strong>{page.heading}</strong>
+            <p>{page.description}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+  )
+}

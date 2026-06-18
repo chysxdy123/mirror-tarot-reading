@@ -1,0 +1,48 @@
+---
+import RelatedLinks from '../components/RelatedLinks.astro';
+import BaseLayout from './BaseLayout.astro';
+import { getRelatedPages, type SitePage } from '../data/pages';
+
+type Props = {
+  page: SitePage;
+};
+
+const { page } = Astro.props;
+const relatedPages = getRelatedPages(page);
+---
+
+<BaseLayout title={page.title} description={page.description} canonicalPath={page.slug} type="article">
+  <article class="article-shell">
+    <header class="article-hero">
+      <p class="eyebrow">{page.eyebrow}</p>
+      <h1>{page.heading}</h1>
+      <p class="lede">{page.intro}</p>
+    </header>
+
+    <div class="article-body">
+      <slot name="before-sections" />
+      {page.sections.map((section) => (
+        <section>
+          <h2>{section.heading}</h2>
+          <p>{section.body}</p>
+        </section>
+      ))}
+      <slot />
+      {
+        page.faqs && page.faqs.length > 0 && (
+          <section class="faq-section">
+            <h2>Questions people also ask</h2>
+            {page.faqs.map((faq) => (
+              <details>
+                <summary>{faq.question}</summary>
+                <p>{faq.answer}</p>
+              </details>
+            ))}
+          </section>
+        )
+      }
+    </div>
+  </article>
+
+  <RelatedLinks pages={relatedPages} />
+</BaseLayout>

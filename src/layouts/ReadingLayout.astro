@@ -1,0 +1,15 @@
+---
+import ArticleLayout from './ArticleLayout.astro';
+import type { SitePage } from '../data/pages';
+
+type Props = {
+  page: SitePage;
+};
+
+const { page } = Astro.props;
+---
+
+<ArticleLayout page={page}>
+  <slot name="before-sections" slot="before-sections" />
+  <slot />
+</ArticleLayout>
