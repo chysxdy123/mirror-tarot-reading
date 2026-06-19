@@ -45,6 +45,12 @@
 - Playwright 验证选择 `Should I text them?` 后抽卡，结果显示所选问题，并且 Window、Mirror、Gentle next step 都带有对应问题语境。
 - 移动端 390px 验证 question-first reading flow 无横向溢出，结果问题标签正确。
 - Question-first reading flow 截图已保存到 `output/playwright/question-first-reading-desktop.png` 和 `output/playwright/question-first-reading-mobile.png`。
+- AI-assisted reading flow 实现后，`npm run check` 通过，结果为 0 errors、0 warnings、0 hints。
+- AI-assisted reading flow 实现后，`npm run test:data` 通过，2 个数据完整性测试通过。
+- AI-assisted reading flow 实现后，`npm run test:html` 通过，love reading 页面包含用户问题输入框、AI-assisted 文案、Comfort / Window / Mirror 结果结构和隐私提示。
+- AI-assisted reading API 实现后，`npm run test:functions` 通过，覆盖无 DeepSeek key 回退、每日限制和安全输入分支。
+- AI-assisted reading flow 实现后，`npm run build` 通过，生成 27 个静态页面和 sitemap。
+- 本地 Astro dev server 在 `http://127.0.0.1:4321/love-tarot-reading/` 返回 200。
 
 ## 未验证内容
 
@@ -55,9 +61,9 @@
 - 尚未配置域名 DNS。
 - 尚未申请或接入 AdSense。
 - 尚未接入 Google Search Console 或 Analytics。
-- 尚未实现 AI-assisted reading API。
-- 尚未验证 AI 模型成本、质量、安全输出和每日限制机制。
-- 尚未更新隐私政策和免责声明以覆盖 AI reading 输入。
+- 尚未在真实 Cloudflare Pages Functions 环境验证 `/api/reading`。
+- 尚未在真实 DeepSeek API key 下验证 AI 模型成本、质量和输出质量。
+- 尚未用浏览器截图复核 AI-assisted reading flow 的桌面和移动端视觉状态。
 - npm audit 当前报告 7 个低/中风险依赖项；未执行 `npm audit fix --force`，避免破坏性升级。
 
 ## 2026-06-19 需求重置验证
@@ -72,7 +78,33 @@
 
 本次未实现内容：
 
-- 未修改前端页面。
-- 未接入 AI API。
-- 未新增后端函数。
+- 未配置真实 DeepSeek API key。
 - 未部署网站。
+
+## 2026-06-19 AI-assisted reading 实现验证
+
+本次完成内容：
+
+- 更新 `src/components/CardDraw.astro`，增加用户问题输入框、热门问题快捷入口、AI reading 请求和静态回退。
+- 更新 `src/components/ReadingResult.astro`，增加 Comfort、reading source 和免责声明提示。
+- 新增 `functions/api/reading.ts`，实现 DeepSeek API 调用、无 key 回退、每日 cookie 限制和安全输入分支。
+- 新增 `functions/api/__tests__/reading.test.mjs`，覆盖核心 API 分支。
+- 更新 `src/data/pages.ts`，补充隐私政策和免责声明的 AI reading 说明。
+- 更新 `src/styles/global.css`，补充问题输入和 reading 状态样式。
+- 更新 `package.json`，新增 `npm run test:functions`。
+
+本次验证命令：
+
+- `npm run check`
+- `npm run test:data`
+- `npm run test:html`
+- `npx tsc --noEmit --ignoreConfig --target ES2022 --module ESNext --moduleResolution Bundler --lib ES2022,DOM functions/api/reading.ts`
+- `npm run test:functions`
+- `npm run build`
+- `git diff --check`
+- `curl -i -s http://127.0.0.1:4321/love-tarot-reading/`
+
+验证限制：
+
+- 本地 Astro dev server 不运行 Cloudflare Pages Functions，因此真实 `/api/reading` 仍需在 Cloudflare 预览或部署环境验证。
+- 当前没有配置 `DEEPSEEK_API_KEY`，未调用真实 DeepSeek API。

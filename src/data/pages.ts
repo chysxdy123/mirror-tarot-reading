@@ -595,11 +595,15 @@ export const sitePages: SitePage[] = [
     sections: [
       {
         heading: 'Personal information',
-        body: 'The first version of the site does not require accounts, names, birth dates, or personal relationship details to use the card reading tool.',
+        body: 'The site does not require accounts, names, birth dates, phone numbers, addresses, or identifying relationship details to use the card reading tool. Users should not enter private identifying information into the question box.',
+      },
+      {
+        heading: 'AI-assisted readings',
+        body: 'When AI-assisted readings are enabled, the relationship question, selected card, and reading context may be sent to a third-party AI provider to generate the result. Mirror Tarot Reading is designed not to save the specific question by default.',
       },
       {
         heading: 'Cookies, analytics, and ads',
-        body: 'Analytics and advertising services may use cookies or similar technologies after they are configured. This page should be updated with provider details before launch.',
+        body: 'Analytics, advertising, and daily reading limit features may use cookies or similar technologies after they are configured. This page should be updated with provider details before launch.',
       },
     ],
     relatedSlugs: ['/about/', '/contact/', '/disclaimer/'],
@@ -625,6 +629,10 @@ export const sitePages: SitePage[] = [
       {
         heading: 'Not professional advice',
         body: 'Content on this site is not psychological, medical, legal, financial, or crisis advice. If you are unsafe or in crisis, seek real-world support from qualified services.',
+      },
+      {
+        heading: 'AI limits',
+        body: 'AI-assisted readings may be incomplete, unavailable, or inaccurate. They should be treated as reflective writing prompts, not as instructions, proof, or certainty about another person.',
       },
     ],
     relatedSlugs: ['/about/', '/privacy-policy/', '/love-tarot-reading/'],

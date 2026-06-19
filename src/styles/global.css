@@ -358,6 +358,43 @@ h3 {
   color: rgba(251, 246, 236, 0.78);
 }
 
+.question-input-label,
+.selector-label {
+  display: block;
+  margin: 1.1rem 0 0.45rem;
+  color: rgba(251, 246, 236, 0.82);
+  font-weight: 760;
+}
+
+.question-input {
+  width: 100%;
+  min-height: 6rem;
+  resize: vertical;
+  padding: 0.9rem;
+  border: 1px solid rgba(223, 191, 120, 0.28);
+  border-radius: 0.65rem;
+  background: rgba(251, 246, 236, 0.08);
+  color: var(--paper);
+  font: inherit;
+  line-height: 1.5;
+}
+
+.question-input::placeholder {
+  color: rgba(251, 246, 236, 0.48);
+}
+
+.question-input:focus-visible {
+  border-color: var(--gold);
+  outline: 2px solid rgba(223, 191, 120, 0.24);
+  outline-offset: 2px;
+}
+
+.privacy-hint {
+  margin: 0.45rem 0 0;
+  color: rgba(251, 246, 236, 0.64);
+  font-size: 0.84rem;
+}
+
 .card-options {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -541,6 +578,16 @@ h3 {
   font-size: 1.18rem;
 }
 
+.reading-source {
+  display: inline-flex;
+  margin: 0 0 0.7rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid rgba(223, 191, 120, 0.24);
+  border-radius: 999px;
+  color: rgba(251, 246, 236, 0.72);
+  font-size: 0.8rem;
+}
+
 .reading-result h4 {
   margin: 0 0 0.35rem;
   color: var(--gold);
@@ -562,6 +609,12 @@ h3 {
   border: 1px solid rgba(251, 246, 236, 0.12);
   border-radius: 0.55rem;
   background: rgba(251, 246, 236, 0.06);
+}
+
+.reading-note {
+  margin: 0.85rem 0 0;
+  color: rgba(251, 246, 236, 0.62);
+  font-size: 0.84rem;
 }
 
 @keyframes reading-reveal {

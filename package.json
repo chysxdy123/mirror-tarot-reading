@@ -9,7 +9,8 @@
     "preview": "astro preview",
     "check": "astro check",
     "test:data": "node --test src/data/__tests__/content-data.test.mjs",
-    "test:html": "npm run build -- --silent && node --test src/data/__tests__/built-html.test.mjs"
+    "test:html": "npm run build -- --silent && node --test src/data/__tests__/built-html.test.mjs",
+    "test:functions": "node --experimental-strip-types --test functions/api/__tests__/reading.test.mjs"
   },
   "dependencies": {
     "@astrojs/check": "latest",

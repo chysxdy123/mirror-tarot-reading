@@ -13,8 +13,13 @@ const { card, questionLabel = 'General love reading', hidden = false } = Astro.p
 <article class="reading-result" data-reading-result class:list={[hidden && 'is-hidden']} aria-live="polite">
   <p class="eyebrow">Your reading for</p>
   <p class="selected-question" data-selected-question>{questionLabel}</p>
+  <p class="reading-source" data-reading-source>Mirror card reading</p>
   <h3 data-card-name>{card.name}</h3>
   <p class="card-hook" data-card-hook>{card.hook}</p>
+  <section>
+    <h4>Comfort</h4>
+    <p data-card-comfort>It makes sense that this question feels hard to put down. Wanting an answer does not make you weak; it means this connection has touched something tender.</p>
+  </section>
   <div class="reading-columns">
     <section>
       <h4>The Window</h4>
@@ -29,4 +34,7 @@ const { card, questionLabel = 'General love reading', hidden = false } = Astro.p
     <h4>Gentle next step</h4>
     <p data-card-action>{card.action}</p>
   </section>
+  <p class="reading-note" data-reading-note>
+    This reading is for entertainment and self-reflection, not professional advice or a guaranteed prediction.
+  </p>
 </article>

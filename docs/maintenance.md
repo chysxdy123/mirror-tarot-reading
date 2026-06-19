@@ -34,6 +34,7 @@ npm run dev
 npm run check
 npm run test:data
 npm run test:html
+npm run test:functions
 ```
 
 构建：
@@ -43,6 +44,13 @@ npm run build
 ```
 
 部署：待技术栈和部署平台确定后补充。
+
+AI reading 环境变量：
+
+- `DEEPSEEK_API_KEY`：DeepSeek API key，只能配置在部署平台服务端环境变量中，不能写入前端代码或提交到 Git。
+- `DEEPSEEK_MODEL`：可选，默认使用 `deepseek-v4-flash`。
+
+本地 Astro dev server 不会运行 Cloudflare Pages Functions。部署到 Cloudflare Pages 后，`functions/api/reading.ts` 才会接管 `/api/reading`。
 
 ## 修改前检查
 
@@ -68,6 +76,7 @@ npm run build
 - AI 失控：AI 只能作为受控 reading 引擎，不能变成无限聊天、强预测或专业建议工具。
 - API 成本：AI reading 必须有输入长度、输出长度和每日次数限制。
 - 隐私风险：用户问题默认不保存，不要求用户输入姓名、联系方式或可识别私人信息。
+- 部署环境差异：本地静态预览和 Cloudflare Pages Functions 的 API 行为不同，部署前需要在 Cloudflare 预览环境验证 `/api/reading`。
 
 ## 后续继续方式
 

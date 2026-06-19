@@ -7,6 +7,8 @@ type ReadingQuestion = {
   label: string;
   category: CardCategory;
   prompt: string;
+  placeholder: string;
+  comfortFrame: string;
   windowFrame: string;
   mirrorFrame: string;
   actionFrame: string;
@@ -26,6 +28,8 @@ const questions: ReadingQuestion[] = [
     label: 'What do they feel about me?',
     category: 'feelings',
     prompt: 'Look at what their signals may be showing and what you hope their feelings will fix.',
+    placeholder: 'What do they feel about me?',
+    comfortFrame: 'It makes sense that you want their feelings to become clearer.',
     windowFrame: 'For this question, the card points to the difference between feeling and capacity.',
     mirrorFrame: 'It also asks what you hope their feelings would finally prove about you.',
     actionFrame: 'Before you search for another sign, compare this reading with their consistent behavior.',
@@ -35,6 +39,8 @@ const questions: ReadingQuestion[] = [
     label: 'Do they miss me?',
     category: 'missing',
     prompt: 'Explore silence, longing, and the need to know whether the connection still matters.',
+    placeholder: 'Do they miss me during this silence?',
+    comfortFrame: 'It makes sense that silence makes you reach for reassurance.',
     windowFrame: 'For this question, the card treats silence as information, not proof.',
     mirrorFrame: 'It also asks why being missed would feel like relief right now.',
     actionFrame: 'Let this answer support reflection, not another round of checking or chasing.',
@@ -44,6 +50,8 @@ const questions: ReadingQuestion[] = [
     label: 'Should I text them?',
     category: 'texting',
     prompt: 'Separate honest communication from the urge to chase reassurance.',
+    placeholder: 'Should I text them or wait?',
+    comfortFrame: 'It makes sense that one message can feel like it carries the whole connection.',
     windowFrame: 'For this question, the card looks at whether contact would create clarity or restart the loop.',
     mirrorFrame: 'It also asks whether the urge to text is expression, repair, or anxiety seeking relief.',
     actionFrame: 'Write the message first, then decide whether it still feels clear after the intensity drops.',
@@ -53,6 +61,8 @@ const questions: ReadingQuestion[] = [
     label: 'Should I wait or let go?',
     category: 'waiting',
     prompt: 'Notice whether waiting is hope, fear, loyalty, or avoidance.',
+    placeholder: 'Should I keep waiting, or is it time to let go?',
+    comfortFrame: 'It makes sense that letting go feels difficult when part of you still sees possibility.',
     windowFrame: 'For this question, the card looks at whether there is movement you can actually see.',
     mirrorFrame: 'It also asks what waiting protects you from feeling or choosing.',
     actionFrame: 'Set one boundary around how long uncertainty is allowed to organize your day.',
@@ -62,6 +72,8 @@ const questions: ReadingQuestion[] = [
     label: 'Why can’t I stop thinking about them?',
     category: 'anxiety',
     prompt: 'Read the emotional loop underneath the repeating thought.',
+    placeholder: 'Why can’t I stop thinking about them?',
+    comfortFrame: 'It makes sense that your mind keeps returning to what still feels unfinished.',
     windowFrame: 'For this question, the card does not treat repetition as destiny.',
     mirrorFrame: 'It also asks what feeling the thought keeps returning to solve.',
     actionFrame: 'Name the feeling under the thought before treating the thought as a sign.',
@@ -78,19 +90,33 @@ const initialQuestion = questions.find((question) => question.category === categ
   data-questions={JSON.stringify(questions)}
 >
   <div class="card-draw-copy">
-    <p class="eyebrow">Three-step reading</p>
-    <h2>Choose your question. Pick one card. Read the Window and the Mirror.</h2>
+    <p class="eyebrow">AI-assisted mirror reading</p>
+    <h2>What question keeps coming back?</h2>
     <p>
-      The reading is clearer when the card responds to a real question, not a vague mood.
+      Type the relationship question on your mind, then choose a card for comfort, reflection, and one grounded next step.
     </p>
   </div>
 
+  <label class="question-input-label" for="mirror-question">Your question</label>
+  <textarea
+    id="mirror-question"
+    class="question-input"
+    data-question-input
+    maxlength="300"
+    rows="3"
+    placeholder={initialQuestion.placeholder}
+  >{initialQuestion.label}</textarea>
+  <p class="privacy-hint">
+    Do not enter names, phone numbers, addresses, or private identifying details.
+  </p>
+
   <div class="reading-steps" aria-label="Reading steps">
-    <span>1. Choose your question</span>
+    <span>1. Ask your question</span>
     <span>2. Pick one card</span>
-    <span>3. Read the Window and the Mirror</span>
+    <span>3. Receive comfort and clarity</span>
   </div>
 
+  <p class="selector-label">Or begin with one of these:</p>
   <div class="question-selector" data-question-selector role="radiogroup" aria-label="Choose your relationship question">
     {questions.map((question) => (
       <button
@@ -129,6 +155,7 @@ const initialQuestion = questions.find((question) => question.category === categ
       const questions = JSON.parse(root.dataset.questions || '[]');
       const buttons = Array.from(root.querySelectorAll('[data-card-index]'));
       const questionButtons = Array.from(root.querySelectorAll('[data-question-id]'));
+      const questionInput = root.querySelector('[data-question-input]');
       const result = root.querySelector('[data-reading-result]');
       let selectedQuestion = questions.find((question) => question.category === defaultCards[0]?.categories?.[0]) || questions[0];
 
@@ -137,15 +164,83 @@ const initialQuestion = questions.find((question) => question.category === categ
         if (element) element.textContent = value;
       };
 
+      const fallbackReading = (card, userQuestion) => ({
+        comfort: `${selectedQuestion.comfortFrame} You are allowed to want tenderness before you try to be clear.`,
+        window: `${selectedQuestion.windowFrame} ${card.window}`,
+        mirror: `${selectedQuestion.mirrorFrame} ${card.mirror}`,
+        action: `${selectedQuestion.actionFrame} ${card.action}`,
+        source: 'Mirror fallback reading',
+        note: 'The AI reading is unavailable right now, so this is a grounded Mirror Tarot fallback.',
+        question: userQuestion,
+      });
+
+      const applyReading = (card, reading) => {
+        setText('[data-selected-question]', reading.question || selectedQuestion.label);
+        setText('[data-card-name]', card.name);
+        setText('[data-card-hook]', card.hook);
+        setText('[data-card-comfort]', reading.comfort);
+        setText('[data-card-window]', reading.window);
+        setText('[data-card-mirror]', reading.mirror);
+        setText('[data-card-action]', reading.action);
+        setText('[data-reading-source]', reading.source || 'AI-assisted Mirror reading');
+        setText('[data-reading-note]', reading.note || 'This reading is for entertainment and self-reflection, not professional advice or a guaranteed prediction.');
+      };
+
       const cardsForQuestion = () => {
         const filtered = allCards.filter((card) => card.categories?.includes(selectedQuestion.category));
         return filtered.length > 0 ? filtered : defaultCards;
+      };
+
+      const readUserQuestion = () => {
+        const value = questionInput instanceof HTMLTextAreaElement ? questionInput.value.trim() : '';
+        return value.slice(0, 300) || selectedQuestion.label;
+      };
+
+      const requestAiReading = async (card, userQuestion) => {
+        const response = await fetch('/api/reading', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            question: userQuestion,
+            category: selectedQuestion.category,
+            card,
+            context: {
+              selectedPrompt: selectedQuestion.prompt,
+              pagePath: window.location.pathname,
+            },
+          }),
+        });
+
+        const payload = await response.json();
+        if (!payload?.reading) {
+          throw new Error('AI reading response was empty');
+        }
+
+        if (!response.ok && !payload.reading) {
+          throw new Error('AI reading request failed');
+        }
+
+        const sourceLabel = {
+          ai: 'AI-assisted Mirror reading',
+          safety: 'Safety-first reflection',
+          fallback: 'Mirror fallback reading',
+        }[payload.source] || 'Mirror fallback reading';
+
+        return {
+          ...payload.reading,
+          source: sourceLabel,
+          note: payload.note,
+          question: userQuestion,
+        };
       };
 
       questionButtons.forEach((button) => {
         button.addEventListener('click', () => {
           const questionId = button.getAttribute('data-question-id');
           selectedQuestion = questions.find((question) => question.id === questionId) || questions[0];
+          if (questionInput instanceof HTMLTextAreaElement) {
+            questionInput.value = selectedQuestion.placeholder || selectedQuestion.label;
+          }
           questionButtons.forEach((item) => {
             item.classList.remove('is-selected');
             item.setAttribute('aria-checked', 'false');
@@ -158,23 +253,30 @@ const initialQuestion = questions.find((question) => question.category === categ
       });
 
       buttons.forEach((button, index) => {
-        button.addEventListener('click', () => {
+        button.addEventListener('click', async () => {
           const cards = cardsForQuestion();
           const card = cards[(index + Math.floor(Math.random() * cards.length)) % cards.length];
+          const userQuestion = readUserQuestion();
           buttons.forEach((item) => {
             item.classList.remove('is-selected', 'is-revealed');
             item.classList.add('is-dimmed');
           });
           button.classList.remove('is-dimmed');
           button.classList.add('is-selected', 'is-revealed');
-          setText('[data-selected-question]', selectedQuestion.label);
-          setText('[data-card-name]', card.name);
-          setText('[data-card-hook]', card.hook);
-          setText('[data-card-window]', `${selectedQuestion.windowFrame} ${card.window}`);
-          setText('[data-card-mirror]', `${selectedQuestion.mirrorFrame} ${card.mirror}`);
-          setText('[data-card-action]', `${selectedQuestion.actionFrame} ${card.action}`);
+          applyReading(card, {
+            ...fallbackReading(card, userQuestion),
+            source: 'Preparing your reading...',
+            note: 'Hold the question gently while the reading forms.',
+          });
           result?.classList.remove('is-hidden');
           result?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+          try {
+            const reading = await requestAiReading(card, userQuestion);
+            applyReading(card, reading);
+          } catch (error) {
+            applyReading(card, fallbackReading(card, userQuestion));
+          }
         });
       });
     });
