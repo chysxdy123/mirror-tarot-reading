@@ -1,5 +1,7 @@
 # Mirror Tarot Reading 技术方案
 
+> 状态说明：本文件记录初版 Astro 静态站技术方案。Astro 静态内容站决策继续有效；AI-assisted reading 需要新增服务端 API 层，优先参考 `docs/requirements/ai-assisted-reading-mvp.md`。
+
 ## 1. 技术目标
 
 第一版技术方案必须服务 SEO 内容站和低维护目标。

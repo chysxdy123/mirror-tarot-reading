@@ -11,15 +11,36 @@
 - `docs/maintenance.md`：维护方式和常见风险。
 - `docs/verification.md`：验证记录。
 
-网站代码目录尚未创建。技术方案确认后再新增应用代码。
+网站代码已创建，当前采用 Astro 静态站结构。
+
+关键代码目录：
+
+- `src/pages/`：页面路由。
+- `src/components/`：页面组件和抽牌组件。
+- `src/data/`：卡牌、页面元信息和内容数据。
+- `src/styles/`：全局样式。
 
 ## 常用命令
 
-启动：待技术栈确定后补充。
+启动：
 
-测试：待技术栈确定后补充。
+```bash
+npm run dev
+```
 
-构建：待技术栈确定后补充。
+测试：
+
+```bash
+npm run check
+npm run test:data
+npm run test:html
+```
+
+构建：
+
+```bash
+npm run build
+```
 
 部署：待技术栈和部署平台确定后补充。
 
@@ -44,6 +65,9 @@
 - 关键词跑偏：第一阶段应聚焦 Relationship Uncertainty，不要过早扩成全品类塔罗站。
 - 维护压力：20 到 30 页只是起点，后续需要根据 Search Console 数据持续更新内容。
 - 广告体验：广告位应自然嵌入，不能让页面看起来广告多于内容。
+- AI 失控：AI 只能作为受控 reading 引擎，不能变成无限聊天、强预测或专业建议工具。
+- API 成本：AI reading 必须有输入长度、输出长度和每日次数限制。
+- 隐私风险：用户问题默认不保存，不要求用户输入姓名、联系方式或可识别私人信息。
 
 ## 后续继续方式
 
@@ -54,3 +78,8 @@
 3. `docs/requirements/`
 4. `docs/decisions/`
 5. `docs/verification.md`
+
+AI-assisted reading 相关改动还需要额外阅读：
+
+- `docs/requirements/ai-assisted-reading-mvp.md`
+- `docs/decisions/2026-06-19-ai-assisted-reading-mvp.md`

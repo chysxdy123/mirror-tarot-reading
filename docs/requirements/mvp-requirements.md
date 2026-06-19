@@ -1,5 +1,7 @@
 # Mirror Tarot Reading MVP 需求规格
 
+> 状态说明：本文件记录 2026-06-18 的初版静态 MVP 需求。2026-06-19 起，下一阶段实现应优先参考 `docs/requirements/ai-assisted-reading-mvp.md`。若两者冲突，以 AI-assisted Emotional Reading MVP 为准。
+
 ## 1. 项目目标
 
 Mirror Tarot Reading 的第一阶段目标是建立一个英文 SEO 内容站，通过 Relationship Uncertainty 主题吸引搜索流量，并为 Google AdSense 审核和后续广告变现打基础。

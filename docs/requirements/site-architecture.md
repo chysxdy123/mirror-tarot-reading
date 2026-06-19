@@ -1,5 +1,7 @@
 # Mirror Tarot Reading 页面结构与用户路径
 
+> 状态说明：本文件记录初版“SEO 内容站 + 轻量翻牌工具”的页面架构。2026-06-19 起，下一阶段 reading 体验应优先参考 `docs/requirements/ai-assisted-reading-mvp.md`。SEO 页面和内容站骨架继续有效。
+
 ## 1. 设计目标
 
 本文件定义 Mirror Tarot Reading 第一版的网站信息架构、页面职责、核心用户路径和广告布局原则。

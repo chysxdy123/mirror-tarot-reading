@@ -51,9 +51,28 @@
 还没有验证的部分：
 
 - 尚未验证关键词精确搜索量。
-- 尚未设计页面视觉稿。
 - 尚未部署网站。
 - 尚未配置域名 DNS。
 - 尚未申请或接入 AdSense。
 - 尚未接入 Google Search Console 或 Analytics。
+- 尚未实现 AI-assisted reading API。
+- 尚未验证 AI 模型成本、质量、安全输出和每日限制机制。
+- 尚未更新隐私政策和免责声明以覆盖 AI reading 输入。
 - npm audit 当前报告 7 个低/中风险依赖项；未执行 `npm audit fix --force`，避免破坏性升级。
+
+## 2026-06-19 需求重置验证
+
+本次完成内容：
+
+- 新增 `docs/requirements/ai-assisted-reading-mvp.md`。
+- 新增 `docs/decisions/2026-06-19-ai-assisted-reading-mvp.md`。
+- 更新 `docs/product.md`，将下一阶段 MVP 调整为 SEO 内容站 + AI-assisted emotional reading。
+- 更新 `docs/maintenance.md`，补充当前 Astro 代码结构、常用命令和 AI 相关维护风险。
+- 在旧版需求、页面架构和技术方案文档开头增加状态说明，避免后续误用旧规格。
+
+本次未实现内容：
+
+- 未修改前端页面。
+- 未接入 AI API。
+- 未新增后端函数。
+- 未部署网站。
