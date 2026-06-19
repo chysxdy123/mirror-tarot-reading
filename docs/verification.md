@@ -57,12 +57,13 @@
 还没有验证的部分：
 
 - 尚未验证关键词精确搜索量。
-- 尚未部署网站。
-- 尚未配置域名 DNS。
+- 已部署到 Cloudflare Pages。
+- 已配置域名 DNS，并由用户完成线上访问验证。
 - 尚未申请或接入 AdSense。
 - 尚未接入 Google Search Console 或 Analytics。
-- 尚未在真实 Cloudflare Pages Functions 环境验证 `/api/reading`。
-- 尚未在真实 DeepSeek API key 下验证 AI 模型成本、质量和输出质量。
+- 用户已验证线上网站可访问。Codex 本轮未通过外部抓取服务复核域名，因为抓取请求未返回可靠结果。
+- 真实 Cloudflare Pages Functions 环境下的 `/api/reading` 已进入部署验证阶段；后续仍需持续观察错误率、限额和成本。
+- 真实 DeepSeek API key 已配置到 Cloudflare Pages 环境变量；后续仍需持续评估 AI 输出质量、成本和异常响应。
 - 尚未用浏览器截图复核 AI-assisted reading flow 的桌面和移动端视觉状态。
 - npm audit 当前报告 7 个低/中风险依赖项；未执行 `npm audit fix --force`，避免破坏性升级。
 
@@ -108,3 +109,30 @@
 
 - 本地 Astro dev server 不运行 Cloudflare Pages Functions，因此真实 `/api/reading` 仍需在 Cloudflare 预览或部署环境验证。
 - 当前没有配置 `DEEPSEEK_API_KEY`，未调用真实 DeepSeek API。
+
+## 2026-06-19 部署上线验证
+
+本次完成内容：
+
+- GitHub 仓库已创建并推送：`https://github.com/chysxdy123/mirror-tarot-reading`。
+- Cloudflare Pages 项目已创建：`mirror-tarot-reading`。
+- Cloudflare Pages 构建配置为 `npm run build`，输出目录为 `dist`，生产分支为 `main`。
+- Cloudflare Pages 已配置服务端环境变量 `DEEPSEEK_API_KEY`。
+- Cloudflare DNS zone 已创建：`mirrortarotreading.com`。
+- 阿里云域名 DNS 已切换到 Cloudflare nameservers：`langston.ns.cloudflare.com` 和 `ximena.ns.cloudflare.com`。
+- 用户已完成线上访问验证。
+
+本次本地验证命令：
+
+- `npm run check`：通过，26 个文件，0 errors、0 warnings、0 hints。
+- `npm run test:data`：通过，2 个测试通过。
+- `npm run test:functions`：通过，3 个测试通过。
+- `npm run build`：通过，生成 27 个页面和 sitemap。
+
+上线后仍需观察：
+
+- Cloudflare nameserver 和 SSL 状态是否完全稳定。
+- `https://mirrortarotreading.com/`、`https://mirrortarotreading.com/love-tarot-reading/` 和 `https://www.mirrortarotreading.com/` 是否持续可访问。
+- `/api/reading` 是否稳定返回 AI reading，而不是异常回退。
+- DeepSeek API 的每日调用量、失败率、输出质量和成本。
+- 建议在部署稳定后轮换 DeepSeek API key，因为部署配置过程中密钥曾在界面中出现过。

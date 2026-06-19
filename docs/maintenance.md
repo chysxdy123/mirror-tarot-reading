@@ -43,7 +43,22 @@ npm run test:functions
 npm run build
 ```
 
-部署：待技术栈和部署平台确定后补充。
+部署：
+
+```bash
+npm run build
+git push origin main
+```
+
+当前生产部署使用 Cloudflare Pages：
+
+- GitHub 仓库：`https://github.com/chysxdy123/mirror-tarot-reading`
+- Cloudflare Pages 项目：`mirror-tarot-reading`
+- Pages 默认域名：`mirror-tarot-reading.pages.dev`
+- 生产域名：`https://mirrortarotreading.com`
+- 构建命令：`npm run build`
+- 输出目录：`dist`
+- 生产分支：`main`
 
 AI reading 环境变量：
 
@@ -51,6 +66,13 @@ AI reading 环境变量：
 - `DEEPSEEK_MODEL`：可选，默认使用 `deepseek-v4-flash`。
 
 本地 Astro dev server 不会运行 Cloudflare Pages Functions。部署到 Cloudflare Pages 后，`functions/api/reading.ts` 才会接管 `/api/reading`。
+
+域名和 DNS：
+
+- 域名注册商：阿里云。
+- DNS 托管：Cloudflare。
+- Cloudflare nameservers：`langston.ns.cloudflare.com`、`ximena.ns.cloudflare.com`。
+- 如果企业邮箱相关记录存在，`imap`、`mail`、`pop3`、`smtp` 等邮件 CNAME 记录应保持 DNS-only，避免被 Cloudflare 代理影响邮件服务。
 
 ## 修改前检查
 
@@ -77,6 +99,7 @@ AI reading 环境变量：
 - API 成本：AI reading 必须有输入长度、输出长度和每日次数限制。
 - 隐私风险：用户问题默认不保存，不要求用户输入姓名、联系方式或可识别私人信息。
 - 部署环境差异：本地静态预览和 Cloudflare Pages Functions 的 API 行为不同，部署前需要在 Cloudflare 预览环境验证 `/api/reading`。
+- 密钥暴露风险：如果 API key 曾在页面、截图、日志或对话中可见，应创建新 key，替换 Cloudflare Pages 环境变量，并删除旧 key。
 
 ## 后续继续方式
 
